@@ -3,10 +3,12 @@
  * Este script toma la tabla de recursos guardados en campo blob
  * y los pasa a la tabla con el campo json
  */
-$idiomas = ["0" => "es", "1" => "in", "2" => "fr"];
 include "conector.php";
+$idiomas = ["1" => "es", "2" => "in", "3" => "fr"];
+$tabla_origen = "cifasis_recursos_archivos";
+$tabla_destino = "resumenes";
 $area = "recursos";
-$query = "SELECT * FROM `cifasis_recursos_archivos`";
+$query = "SELECT * FROM `{$tabla_origen}`";
 if( sql_select( $query, $consulta ) )
 {
     while( $row = $consulta->fetch(\PDO::FETCH_ASSOC) )
@@ -48,20 +50,18 @@ if( sql_select( $query, $consulta ) )
             $nue['hash_path_completo'] = $hash_path_completo;
             foreach( $idiomas as $key_idioma => $idioma )
             {
-                $nue['titulo'][$key_idioma] = [strval($key_idioma) => $row['titulo_'.$idioma]];
-                $nue['comentario'][$key_idioma] = [strval($key_idioma) => $row['comentario_'.$idioma]];
+                $nue['titulo'][$key_idioma] = $row['titulo_'.$idioma];
+                $nue['comentario'][$key_idioma] = $row['comentario_'.$idioma];
             }
             $nue['id_contexto'] = $id_contexto;
             $nue['activo'] = $activo;
-            //
             $cadena_json = addslashes(json_encode( $nue ));
-            $query = "INSERT INTO resumenes (id_idioma,area,componente,resumen) VALUES (0,'{$area}','{$componente}','{$cadena_json}')";
+            $query = "INSERT INTO `{$tabla_destino}` (id_idioma,area,componente,resumen) VALUES (0,'{$area}','{$componente}','{$cadena_json}')";
             if( sql_select( $query, $consulta2 ) )
             {
                 echo "bien!";
             }else
             {
-                //var_dump( mysql_error( $consulta2 ) );
                 echo "---->MAL!";
             }
             echo "\n";
