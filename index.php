@@ -1,13 +1,15 @@
 <?php
-// https://scotch.io/tutorials/working-with-json-in-mysql
 /**
  * este script lee las imagenes png de una carpeta
- * y las guarda en un campo json de mysql
+ * y las guarda en un campo json de mysql.
+ * https://scotch.io/tutorials/working-with-json-in-mysql
  */
-include "config.php";
+include "conector.php";
 $dir = "/home/pablo/Imágenes/";
 $tipo = "image/png";
 $extension = "png";
+$area = "recursos";
+$componente = "imagen";
 // busco archivos
 if( is_dir($dir) )
 {
@@ -24,19 +26,20 @@ if( is_dir($dir) )
                     "archivo" => $file2,
                     "archivo2" => $file,
                     "tipo" => $tipo,
-                    "peso" => strlen($imageData),
+                    "peso" => strlen($contenido),
                     "contenido" => $imageData
                 ];
                 $cadena_json = addslashes(json_encode( $row ));
-                $query = "INSERT INTO resumenes (resumen) VALUES ('{$cadena_json}')";
-                echo "file--->{$file2}\n";
+                $query = "INSERT INTO resumenes (area,componente,resumen) VALUES ('{$area}','{$componente}','{$cadena_json}')";
+                echo "file--->{$file2}--->";
                 if( sql_select( $query, $consulta ) )
                 {
-                    echo "bien!\n";
+                    echo "bien!";
                 }else
                 {
-                    echo "mal!\n";
+                    echo "MAL!";
                 }
+                echo "\n";
             }
         }
         closedir($dh);

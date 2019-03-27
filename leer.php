@@ -3,7 +3,7 @@
  * Lee las imagenes guardadas en mysql
  * y las muestra en una tabla
  */
-include "config.php";
+include "conector.php";
 $query = "SELECT * FROM `resumenes`";
 if( sql_select( $query, $consulta ) )
 {
