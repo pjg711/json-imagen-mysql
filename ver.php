@@ -9,11 +9,12 @@ if( @sql_select( $query, $consulta ) )
     {
         $json = json_decode( $fotito["resumen"], true );
         $tipo = $json["tipo"];
-        $peso = $json["peso"];
+        //$peso = $json["peso"];
         $contenido = base64_decode( $json["contenido"] );
-        //$peso = strlen($contenido);
+        $peso2 = strlen($contenido);
+        //echo "peso-->{$peso}--->peso2---->{$peso2}<br>";
         header("Content-type: $tipo");
-        header("Content-length: $peso");
+        header("Content-length: $peso2");
         echo $contenido;
     }
 }

@@ -34,6 +34,7 @@ function sql_select( $query, &$rv, $reemplazo = true, $cantidad = 0 )
   	$rv = $db_link->prepare( $query );
   	if( !$rv->execute() )
   	{
+        print_r( $rv->errorInfo() );
 		return false;
   	}
   	if( $last_id = $db_link->lastInsertId() )
